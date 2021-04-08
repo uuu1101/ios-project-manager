@@ -1,21 +1,21 @@
 import UIKit
 
-class ViewController: UIViewController {
+class TodoListController: UIViewController {
     // array 는 struct 인데 내부가 reference type ..
-    private var todosList = TodoList(items: [
-        Item(id: 1, title: "무엇이냐", body: "ㅅㅎㅎㅎㅇ?", deadline: Date()),
-        Item(id: 2, title: "블라블라", body: "계속블라블라?", deadline: Date()),
-        Item(id: 3, title: "난괜차나", body: "", deadline: Date()),
-        Item(id: 4, title: "다들참말마나", body: "범범범범?", deadline: Date()),
-        Item(id: 5, title: "아킵워킹", body: "딱 좋은것만 ?", deadline: Date()),
-        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date())
+    private var todosList = TodoListDataSource(state: .todo, items: [
+        Item(id: 1, title: "무엇이냐", body: "ㅅㅎㅎㅎㅇ?", deadline: Date(), state: .todo),
+        Item(id: 2, title: "블라블라", body: "계속블라블라?", deadline: Date(), state: .todo),
+        Item(id: 3, title: "난괜차나", body: "", deadline: Date(), state: .todo),
+        Item(id: 4, title: "다들참말마나", body: "범범범범?", deadline: Date(), state: .todo),
+        Item(id: 5, title: "아킵워킹", body: "딱 좋은것만 ?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo)
     ])
-    private var doingsList = TodoList(items: [
-        Item(id: 4, title: "Mymymy", body: "troye sivan", deadline: Date()),
-        Item(id: 5, title: "", body: "", deadline: Date()),
-        Item(id: 6, title: "sdfsda", body: "", deadline: Date())
+    private var doingsList = TodoListDataSource(state: .doing, items: [
+        Item(id: 4, title: "Mymymy", body: "troye sivan", deadline: Date(), state: .doing),
+        Item(id: 5, title: "sdfsd", body: "", deadline: Date(), state: .doing),
+        Item(id: 6, title: "sdfsda", body: "", deadline: Date(), state: .doing)
     ])
-    private var donesList = TodoList(items: [])
+    private var donesList = TodoListDataSource(state: .done, items: [])
     
     private let stackViewSpacing = 10
     
@@ -33,8 +33,20 @@ class ViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationController?.navigationItem.title = "Project Manager"
+        setupNavigationBar()
         setupUI()
+    }
+    
+    private func setupNavigationBar() {
+        title = "Project Manager"
+        navigationController?.isToolbarHidden = false
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addTapped))
+//        navigationController?.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(addTapped))
+    }
+    
+    @objc private func addTapped() {
+        let detailViewController = UINavigationController(rootViewController: TodoDetailController(addOnly: true))
+        //present(detailViewController, animated: true, completion: nil)
     }
     
     private func setupUI() {
@@ -63,15 +75,15 @@ class ViewController: UIViewController {
     }
     
     private func configureList(_ collectionView: ItemListView) {
-        collectionView.dataSource = self
+        collectionView.dataSource = dataSourceForCollectionView(collectionView)
         collectionView.delegate = self
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
     }
 }
 
-private extension ViewController {
-    func dataSourceForCollectionView(_ collectionView: UICollectionView) -> TodoList {
+private extension TodoListController {
+    func dataSourceForCollectionView(_ collectionView: UICollectionView) -> TodoListDataSource {
         guard let collectionView = collectionView as? ItemListView else {
             fatalError()
         }
@@ -83,114 +95,48 @@ private extension ViewController {
             return doingsList
         case .done:
             return donesList
-        default:
-            fatalError() // nil 처리를 앞에서 하면됨
         }
     }
 }
 
-extension ViewController: UICollectionViewDelegate {
+extension TodoListController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("select!")
+        guard let selectedItem = dataSourceForCollectionView(collectionView).getTodo(at: indexPath.item) else {
+            return
+        }
+        let detailViewController = UINavigationController(rootViewController: TodoDetailController(todo: selectedItem, addOnly: false))
+        present(detailViewController, animated: true, completion: nil)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, canEditItemAt indexPath: IndexPath) -> Bool {
+        true
     }
 }
 
-extension ViewController: UICollectionViewDataSource {
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let collectionView = collectionView as? ItemListView else {
-            return 0
-        }
-        print("numberOfItemsInSection() call!")
-        
-        //print("현재 todos.count \(todos.count)!")
-        return dataSourceForCollectionView(collectionView).getCount()
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let collectionView = collectionView as? ItemListView,
-              let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "ItemListCell", for: indexPath) as? ItemListCell,
-              let todo = dataSourceForCollectionView(collectionView).getTodo(at: indexPath.item) else {
-            fatalError()
-        }
-        
-        cell.setItem(todo)
-        cell.isSelected = true
-        collectionView.selectItem(at: indexPath, animated: true, scrollPosition: .bottom)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-        print("header view 설정하는 거")
-        guard let collectionView = collectionView as? ItemListView else {
-            fatalError("failed to load ItemListView")
-        }
-        //setNeedsdisplay
-        if kind == UICollectionView.elementKindSectionHeader {
-            guard let headerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ListHeaderView", for: indexPath) as? ListHeaderView else {
-                fatalError("failed to load ListHeaderView")
-            }
-            
-            headerView.setupInfo(state: collectionView.state!, count: dataSourceForCollectionView(collectionView).getCount())
-            
-            return headerView
-//        } else if kind == UICollectionView.elementKindSectionFooter {
-//            let footerView = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "ListFooterView", for: indexPath)
-//            // 높이 설정해주는거
-//            footerView.heightAnchor.constraint(equalToConstant: 100).isActive = true
-//
-//            return footerView
-        } else {
-            fatalError()
-        }
-    }
-    
-    
-}
-
-extension ViewController: UICollectionViewDelegateFlowLayout {
+extension TodoListController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
         
-        return CGSize(width: collectionView.frame.width, height: 50)
+        return CGSize(width: collectionView.frame.width, height: 55)
     }
 }
 
-extension ViewController: UICollectionViewDragDelegate {
+extension TodoListController: UICollectionViewDragDelegate {
     func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
         guard let collectionView = collectionView as? ItemListView else {
             fatalError("failed to load ItemListView")
         }
-        print("<1> itemsForBeginning session call!")
-        guard let targetItem = dataSourceForCollectionView(collectionView).getTodo(at: indexPath.item) else {
-            return []
-        }
-        print("target item : \(targetItem)")
-        
-        let itemProvider = NSItemProvider(object: targetItem.title as NSString)
-        let dragItem = UIDragItem(itemProvider: itemProvider)
-        dragItem.localObject = targetItem
         
         let dragCoordinator = CacheDragCoordinator(sourceIndexPath: indexPath)
         session.localContext = dragCoordinator
         
-        return [dragItem]
+        let dataSource = dataSourceForCollectionView(collectionView)
+        return dataSource.dragItems(for: indexPath)
     }
     
     func collectionView(_ collectionView: UICollectionView, dragSessionDidEnd session: UIDragSession) {
         guard let collectionView = collectionView as? ItemListView else {
             return
         }
-        print("<4> dragSessionDidEnd call!")
-//        var items = [Item]()
-//        switch collectionView.state {
-//        case .todo:
-//            items = todos
-//        case .doing:
-//            items = doings
-//        case .done:
-//            items = dones
-//        default:
-//            break
-//        }
         
         guard
           let dragCoordinator = session.localContext as? CacheDragCoordinator,
@@ -199,18 +145,20 @@ extension ViewController: UICollectionViewDragDelegate {
           else {
             return
         }
-        print("<4> dragSessionDidEnd - 다른 뷰로 옮겨졌을 때만 지우기!")
-        print("옮기기 시작한 collectionView는 \(collectionView.state)")
+        
         let sourceIndexPath = dragCoordinator.sourceIndexPath
         collectionView.performBatchUpdates({
             dataSourceForCollectionView(collectionView).deleteTodo(at: sourceIndexPath.item)
             collectionView.deleteItems(at: [sourceIndexPath])
+            updateHeaderView(of: collectionView)
         })
+        
+        //collectionView.collectionViewLayout.invalidateLayout()
     }
 }
 
 
-extension ViewController: UICollectionViewDropDelegate {
+extension TodoListController: UICollectionViewDropDelegate {
     func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
         // 이 메서드가 불리면서 넘어온 drop activity 에 대응하는 drag session 이 있는지
         // 확인하고 없으면 다른 곳에서 넘어온 drag drop 이니까 copy 해줌
@@ -253,20 +201,33 @@ extension ViewController: UICollectionViewDropDelegate {
                     dataSourceForCollectionView(collectionView).moveTodo(at: sourceIndexPath.item, to: destinationIndexPath.item)
                     collectionView.deleteItems(at: [sourceIndexPath])
                     collectionView.insertItems(at: [destinationIndexPath])
+                    updateHeaderView(of: collectionView)
                 })
             } else {
                 dragCoordinator.isReordering = false
                 // 다른 views 간의 이동
-                print("목적지 collectionView는 \(collectionView.state)")
-                if let thing = item.dragItem.localObject as? Item {
+                if var thing = item.dragItem.localObject as? Item {
+                    thing.state = collectionView.state
                     collectionView.performBatchUpdates ({
                         dataSourceForCollectionView(collectionView).addTodo(thing, at: destinationIndexPath.item)
                         collectionView.insertItems(at: [destinationIndexPath])
+                        updateHeaderView(of: collectionView)
                     })
                 }
             }
             dragCoordinator.dragCompleted = true
             coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+            
+        }
+    }
+}
+
+extension TodoListController {
+    private func updateHeaderView(of collectionView: ItemListView) {
+        //collectionView.supplementaryView(forElementKind: UICollectionView.elementKindSectionHeader, at: .init(item: 0, section: 0))
+        if let supplementaryView = collectionView.visibleSupplementaryViews(ofKind: UICollectionView.elementKindSectionHeader).first,
+           let headerView = supplementaryView as? ListHeaderView {
+            dataSourceForCollectionView(collectionView).updateHeaderView(headerView)
         }
     }
 }

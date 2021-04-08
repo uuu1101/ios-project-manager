@@ -12,10 +12,11 @@
 		173676932615BD2100064906 /* State.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173676922615BD2100064906 /* State.swift */; };
 		173676992616F4F000064906 /* ItemListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173676982616F4F000064906 /* ItemListView.swift */; };
 		173708212612B443000E20C9 /* Item.swift in Sources */ = {isa = PBXBuildFile; fileRef = 173708202612B443000E20C9 /* Item.swift */; };
-		17B08880261DB32600991F02 /* TodoList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B0887F261DB32600991F02 /* TodoList.swift */; };
+		17780679261E1BF100827878 /* TodoDetailController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17780678261E1BF100827878 /* TodoDetailController.swift */; };
+		17B08880261DB32600991F02 /* TodoListDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 17B0887F261DB32600991F02 /* TodoListDataSource.swift */; };
 		C7431F0625F51E1D0094C4CF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7431F0525F51E1D0094C4CF /* AppDelegate.swift */; };
 		C7431F0825F51E1D0094C4CF /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7431F0725F51E1D0094C4CF /* SceneDelegate.swift */; };
-		C7431F0A25F51E1D0094C4CF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7431F0925F51E1D0094C4CF /* ViewController.swift */; };
+		C7431F0A25F51E1D0094C4CF /* TodoListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C7431F0925F51E1D0094C4CF /* TodoListController.swift */; };
 		C7431F0D25F51E1D0094C4CF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7431F0B25F51E1D0094C4CF /* Main.storyboard */; };
 		C7431F0F25F51E1E0094C4CF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C7431F0E25F51E1E0094C4CF /* Assets.xcassets */; };
 		C7431F1225F51E1E0094C4CF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C7431F1025F51E1E0094C4CF /* LaunchScreen.storyboard */; };
@@ -27,11 +28,12 @@
 		173676922615BD2100064906 /* State.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = State.swift; sourceTree = "<group>"; };
 		173676982616F4F000064906 /* ItemListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemListView.swift; sourceTree = "<group>"; };
 		173708202612B443000E20C9 /* Item.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Item.swift; sourceTree = "<group>"; };
-		17B0887F261DB32600991F02 /* TodoList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoList.swift; sourceTree = "<group>"; };
+		17780678261E1BF100827878 /* TodoDetailController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoDetailController.swift; sourceTree = "<group>"; };
+		17B0887F261DB32600991F02 /* TodoListDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListDataSource.swift; sourceTree = "<group>"; };
 		C7431F0225F51E1D0094C4CF /* ProjectManager.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ProjectManager.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C7431F0525F51E1D0094C4CF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C7431F0725F51E1D0094C4CF /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		C7431F0925F51E1D0094C4CF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C7431F0925F51E1D0094C4CF /* TodoListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TodoListController.swift; sourceTree = "<group>"; };
 		C7431F0C25F51E1D0094C4CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C7431F0E25F51E1E0094C4CF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C7431F1125F51E1E0094C4CF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -69,6 +71,7 @@
 		173676952615C83D00064906 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C7431F0B25F51E1D0094C4CF /* Main.storyboard */,
 				C7431F1325F51E1E0094C4CF /* Info.plist */,
 				C7431F1025F51E1E0094C4CF /* LaunchScreen.storyboard */,
 				C7431F0E25F51E1E0094C4CF /* Assets.xcassets */,
@@ -83,7 +86,7 @@
 			children = (
 				173708202612B443000E20C9 /* Item.swift */,
 				173676922615BD2100064906 /* State.swift */,
-				17B0887F261DB32600991F02 /* TodoList.swift */,
+				17B0887F261DB32600991F02 /* TodoListDataSource.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -111,8 +114,8 @@
 				1736768C2615BCA600064906 /* View */,
 				173676862614D6D400064906 /* Cell */,
 				1737081F2612B433000E20C9 /* Model */,
-				C7431F0925F51E1D0094C4CF /* ViewController.swift */,
-				C7431F0B25F51E1D0094C4CF /* Main.storyboard */,
+				C7431F0925F51E1D0094C4CF /* TodoListController.swift */,
+				17780678261E1BF100827878 /* TodoDetailController.swift */,
 			);
 			path = ProjectManager;
 			sourceTree = "<group>";
@@ -187,11 +190,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C7431F0A25F51E1D0094C4CF /* ViewController.swift in Sources */,
+				C7431F0A25F51E1D0094C4CF /* TodoListController.swift in Sources */,
+				17780679261E1BF100827878 /* TodoDetailController.swift in Sources */,
 				173708212612B443000E20C9 /* Item.swift in Sources */,
 				C7431F0625F51E1D0094C4CF /* AppDelegate.swift in Sources */,
 				173676992616F4F000064906 /* ItemListView.swift in Sources */,
-				17B08880261DB32600991F02 /* TodoList.swift in Sources */,
+				17B08880261DB32600991F02 /* TodoListDataSource.swift in Sources */,
 				C7431F0825F51E1D0094C4CF /* SceneDelegate.swift in Sources */,
 				173676882614D76000064906 /* ItemListCell.swift in Sources */,
 				173676932615BD2100064906 /* State.swift in Sources */,

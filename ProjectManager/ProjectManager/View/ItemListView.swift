@@ -11,7 +11,7 @@ class CacheDragCoordinator {
 }
 
 class ItemListView: UICollectionView {
-    private(set) var state: State?
+    private(set) var state: State
     
     init(state: State, width: CGFloat) {
         let layout = UICollectionViewFlowLayout()
@@ -20,18 +20,20 @@ class ItemListView: UICollectionView {
         //layout.estimatedItemSize = CGSize(width: width, height: 100)
         layout.estimatedItemSize.width = width
         layout.headerReferenceSize.width = width
+        
 //        layout.sectionHeadersPinToVisibleBounds = true
         //layout.itemSize = UICollectionViewFlowLayout.automaticSize
         layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) // ?
+        self.state = state // 이게 밑으로 가면 나는 에러는 왜 나는건지
         super.init(frame: .zero, collectionViewLayout: layout)
-        self.state = state
+        
         register(ItemListCell.self, forCellWithReuseIdentifier: "ItemListCell")
         register(ListHeaderView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "ListHeaderView")
         setupUI()
     }
     
     required init?(coder: NSCoder) {
-        super.init(coder: coder)
+        fatalError("init(coder:) has not been implemented")
     }
     
     private func setupUI() {

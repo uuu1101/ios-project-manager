@@ -49,6 +49,11 @@ class ListHeaderView: UICollectionReusableView {
         updateConstraints()
     }
     
+    func updateCount(_ count: Int) {
+        itemCountLabel.text = "\(count)"
+        //setNeedsLayout()
+    }
+    
     private func setupUI() {
         addSubview(stateLabel)
         addSubview(itemCountView)

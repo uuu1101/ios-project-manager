@@ -5,4 +5,5 @@ struct Item {
     let title: String
     let body: String
     let deadline: Date
+    var state: State
 }
