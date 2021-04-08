@@ -10,12 +10,12 @@ import Foundation
 struct Todo: Codable {
     let title: String
     let description: String
-    let deadLine: Double
+    let deadline: Double
     
     enum CodingKeys: String, CodingKey {
-        case title, description, deadLine
+        case title, description, deadline
     }
     var convertedDate: String {
-        return DateFormatter().convertToLocaleDate(deadLine)
+        return DateFormatter().convertToLocaleDate(deadline)
     }
 }

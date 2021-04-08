@@ -8,7 +8,11 @@
 import Foundation
 
 extension String {
-   static let navigationBarTitle = "Project Manager"
+    static let navigationBarTitle = "Project Manager"
+    static let empty = ""
+    static let todo = "TODO"
+    static let doing = "DOING"
+    static let done = "DONE"
 }
 
 extension DateFormatter {
@@ -19,7 +23,7 @@ extension DateFormatter {
         dateFormatter.locale = Locale.autoupdatingCurrent
         dateFormatter.dateFormat = "yyyy. MM. dd"
         let dateString = dateFormatter.string(from: date)
-
+        
         return dateString
     }
 }

@@ -12,9 +12,9 @@ class MainViewController: UIViewController {
     private var doingTableView = UITableView(frame: .zero, style: .grouped)
     private var doneTableView = UITableView(frame: .zero, style: .grouped)
     
-    let todoHeaderView = HeaderView(Todos.common.todoList.count, title: String.todo)
-    let doingHeaderView = HeaderView(Todos.common.doingList.count, title: String.doing)
-    let doneHeaderView = HeaderView(Todos.common.doneList.count, title: String.done)
+    private let todoHeaderView = HeaderView(Todos.common.todoList.count, title: String.todo)
+    private let doingHeaderView = HeaderView(Todos.common.doingList.count, title: String.doing)
+    private let doneHeaderView = HeaderView(Todos.common.doneList.count, title: String.done)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -73,7 +73,7 @@ class MainViewController: UIViewController {
     private func showDetailView(isEdit: Bool = false, todo: Todo? = nil, tableView: String? = nil, index: Int = 0) {
         let detailView = DetailViewController()
         let navigationController = UINavigationController(rootViewController: detailView)
-        detailView.tableView = tableView
+        detailView.tableViewName = tableView
         detailView.index = index
         detailView.isEdit = isEdit
         detailView.todo = todo
@@ -119,11 +119,11 @@ extension MainViewController: UITableViewDataSource {
         
         if tableView == todoTableView {
             cell.configure(Todos.common.todoList[indexPath.row])
-            cell.determineColor(Todos.common.todoList[indexPath.row].deadLine)
+            cell.determineColor(Todos.common.todoList[indexPath.row].deadline)
             return cell
         } else if tableView == doingTableView {
             cell.configure(Todos.common.doingList[indexPath.row])
-            cell.determineColor(Todos.common.doingList[indexPath.row].deadLine)
+            cell.determineColor(Todos.common.doingList[indexPath.row].deadline)
             return cell
         } else if tableView == doneTableView {
             cell.configure(Todos.common.doneList[indexPath.row])
@@ -181,22 +181,22 @@ extension MainViewController: UITableViewDelegate {
 extension MainViewController: UITableViewDragDelegate {
     
     func tableView(_ tableView: UITableView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
-        var tableViewType = String.empty
+        var tableViewName = String.empty
         if tableView == todoTableView {
-            tableViewType = String.todo
+            tableViewName = String.todo
         } else if tableView == doingTableView {
-            tableViewType = String.doing
+            tableViewName = String.doing
         } else {
-            tableViewType = String.done
+            tableViewName = String.done
         }
-        return Todos.common.dragItems(for: indexPath, from: tableViewType)
+        return Todos.common.dragItems(for: indexPath, from: tableViewName)
     }
 }
 
-extension MainViewController: UITableViewDropDelegate{
+extension MainViewController: UITableViewDropDelegate {
     
     func tableView(_ tableView: UITableView, performDropWith coordinator: UITableViewDropCoordinator) {
-        var tableViewType = String.empty
+        var tableViewName = String.empty
         var indexPath: IndexPath
         if let destinationIndexPath = coordinator.destinationIndexPath {
             indexPath = destinationIndexPath
@@ -206,13 +206,12 @@ extension MainViewController: UITableViewDropDelegate{
             indexPath = IndexPath(row: row, section: section)
         }
         if tableView == todoTableView {
-            tableViewType = String.todo
+            tableViewName = String.todo
         } else if tableView == doingTableView {
-            tableViewType = String.doing
+            tableViewName = String.doing
         } else {
-            tableViewType = String.done
+            tableViewName = String.done
         }
-        
-        Todos.common.dropItems(for: indexPath, from: tableViewType, dropItems: coordinator.items)
+        Todos.common.dropItems(for: indexPath, from: tableViewName, dropItems: coordinator.items)
     }
 }

@@ -12,7 +12,7 @@ class DetailViewController: UIViewController {
     var isEdit: Bool = false
     var todo: Todo? = nil
     var index: Int = 0
-    var tableView: String? = nil
+    var tableViewName: String? = nil
     
     private let titleTextField: UITextField = {
         let textField = UITextField()
@@ -66,7 +66,7 @@ class DetailViewController: UIViewController {
         if isEdit {
             changeToUneditable()
             titleTextField.text = todo?.title
-            let date = Date(timeIntervalSince1970: todo?.deadLine ?? 0)
+            let date = Date(timeIntervalSince1970: todo?.deadline ?? 0)
             datePicker.date = date
             descriptionTextView.text = todo?.description
         }
@@ -80,17 +80,14 @@ class DetailViewController: UIViewController {
     @objc private func touchUpDoneButton() {
         if let title = titleTextField.text, let description = descriptionTextView.text  {
             let deadline = datePicker.date.timeIntervalSince1970
-            let todo = Todo(title: title, description: description, deadLine: deadline)
+            let todo = Todo(title: title, description: description, deadline: deadline)
             if isEdit {
-                if tableView == String.todo {
+                if tableViewName == String.todo {
                     Todos.common.todoList[index] = todo
-                    dump(Todos.common.todoList)
-                } else if tableView == String.doing {
+                } else if tableViewName == String.doing {
                     Todos.common.doingList[index] = todo
-                    dump(Todos.common.doingList)
                 } else {
                     Todos.common.doneList[index] = todo
-                    dump(Todos.common.doneList)
                 }
             } else {
                 Todos.common.todoList.append(todo)
