@@ -170,9 +170,9 @@ extension MainViewController: UITableViewDelegate {
         if tableView == todoTableView {
             showDetailView(isEdit: true, todo: Todos.common.todoList[indexPath.row], tableView: String.todo, index: indexPath.row)
         } else if tableView == doingTableView {
-            showDetailView(isEdit: true, todo: Todos.common.doingList[indexPath.row], tableView: String.todo, index: indexPath.row)
+            showDetailView(isEdit: true, todo: Todos.common.doingList[indexPath.row], tableView: String.doing, index: indexPath.row)
         } else {
-            showDetailView(isEdit: true, todo: Todos.common.doneList[indexPath.row], tableView: String.doing, index: indexPath.row)
+            showDetailView(isEdit: true, todo: Todos.common.doneList[indexPath.row], tableView: String.done, index: indexPath.row)
         }
         tableView.deselectRow(at: indexPath, animated: true)
     }

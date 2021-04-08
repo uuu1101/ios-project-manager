@@ -84,10 +84,13 @@ class DetailViewController: UIViewController {
             if isEdit {
                 if tableView == String.todo {
                     Todos.common.todoList[index] = todo
+                    dump(Todos.common.todoList)
                 } else if tableView == String.doing {
                     Todos.common.doingList[index] = todo
+                    dump(Todos.common.doingList)
                 } else {
                     Todos.common.doneList[index] = todo
+                    dump(Todos.common.doneList)
                 }
             } else {
                 Todos.common.todoList.append(todo)
