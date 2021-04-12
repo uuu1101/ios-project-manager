@@ -63,8 +63,7 @@ class ListHeaderView: UICollectionReusableView {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        print("layoutSubviews() called!")
-        itemCountView.layer.cornerRadius = itemCountView.bounds.height / 2
+        itemCountView.layer.cornerRadius = itemCountView.bounds.height / 2 // 여기서 해줘야하는 이유.. ?
     }
     
     override func updateConstraints() {

@@ -18,12 +18,13 @@ class ItemListView: UICollectionView {
         layout.scrollDirection = .vertical
         layout.minimumLineSpacing = 10
         //layout.estimatedItemSize = CGSize(width: width, height: 100)
+        print("🐢\(width)")
         layout.estimatedItemSize.width = width
         layout.headerReferenceSize.width = width
         
-//        layout.sectionHeadersPinToVisibleBounds = true
+        layout.sectionHeadersPinToVisibleBounds = true
         //layout.itemSize = UICollectionViewFlowLayout.automaticSize
-        layout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0) // ?
+        layout.sectionInset = UIEdgeInsets(top: 10, left: 0, bottom: 0, right: 0) // top 10 주면댐
         self.state = state // 이게 밑으로 가면 나는 에러는 왜 나는건지
         super.init(frame: .zero, collectionViewLayout: layout)
         

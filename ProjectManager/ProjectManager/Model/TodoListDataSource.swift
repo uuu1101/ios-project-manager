@@ -1,6 +1,6 @@
 import UIKit
 
-// 뭐를 먼저쓰더라 ? super 인거 먼저쓰나?
+// 뭐를 먼저쓰더라 ? super 인거 먼저쓰나?// class 먼저 쓴다
 class TodoListDataSource: NSObject, UICollectionViewDataSource {
     private var items: [Item]
     private let state: State

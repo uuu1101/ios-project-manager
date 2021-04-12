@@ -6,8 +6,13 @@ class TodoListController: UIViewController {
         Item(id: 1, title: "무엇이냐", body: "ㅅㅎㅎㅎㅇ?", deadline: Date(), state: .todo),
         Item(id: 2, title: "블라블라", body: "계속블라블라?", deadline: Date(), state: .todo),
         Item(id: 3, title: "난괜차나", body: "", deadline: Date(), state: .todo),
-        Item(id: 4, title: "다들참말마나", body: "범범범범?", deadline: Date(), state: .todo),
+        Item(id: 4, title: "다들참말마나", body: "범범범범?\n헬로헬로로로이ㅓㄹ나얼ㄴㅇㄹ", deadline: Date(), state: .todo),
         Item(id: 5, title: "아킵워킹", body: "딱 좋은것만 ?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo),
+        Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo),
         Item(id: 6, title: "바빠", body: "이 맛은 마치?", deadline: Date(), state: .todo)
     ])
     private var doingsList = TodoListDataSource(state: .doing, items: [
@@ -15,7 +20,11 @@ class TodoListController: UIViewController {
         Item(id: 5, title: "sdfsd", body: "", deadline: Date(), state: .doing),
         Item(id: 6, title: "sdfsda", body: "", deadline: Date(), state: .doing)
     ])
-    private var donesList = TodoListDataSource(state: .done, items: [])
+    private var donesList = TodoListDataSource(state: .done, items: [
+        Item(id: 4, title: "Mymymy", body: "troye sivan", deadline: Date(), state: .done),
+        Item(id: 5, title: "sdfsd", body: "", deadline: Date(), state: .done),
+        Item(id: 6, title: "sdfsda", body: "", deadline: Date(), state: .done)
+    ])
     
     private let stackViewSpacing = 10
     
@@ -23,7 +32,7 @@ class TodoListController: UIViewController {
         var dictionary = [State:ItemListView]()
         let spaceCount = State.allCases.count - 1
         let totalSpaceWidth = CGFloat(stackViewSpacing * spaceCount)
-        let listViewWidth = (view.frame.size.width - totalSpaceWidth) / CGFloat(State.allCases.count)
+        let listViewWidth = (view.bounds.width - totalSpaceWidth) / CGFloat(State.allCases.count) - 0.6
         State.allCases.forEach {
             dictionary[$0] = ItemListView(state: $0, width: listViewWidth)
         }
@@ -46,7 +55,7 @@ class TodoListController: UIViewController {
     
     @objc private func addTapped() {
         let detailViewController = UINavigationController(rootViewController: TodoDetailController(addOnly: true))
-        //present(detailViewController, animated: true, completion: nil)
+        present(detailViewController, animated: true, completion: nil)
     }
     
     private func setupUI() {
@@ -163,7 +172,6 @@ extension TodoListController: UICollectionViewDropDelegate {
         // 이 메서드가 불리면서 넘어온 drop activity 에 대응하는 drag session 이 있는지
         // 확인하고 없으면 다른 곳에서 넘어온 drag drop 이니까 copy 해줌
         
-        print("<2> dropSessionDidUpdate call!")
         guard session.localDragSession != nil,
               session.items.count == 1 else {
             return UICollectionViewDropProposal(operation: .cancel)
@@ -176,7 +184,7 @@ extension TodoListController: UICollectionViewDropDelegate {
         guard let collectionView = collectionView as? ItemListView else {
             fatalError("failed to load ItemListView")
         }
-        print("<3> performDropWith call!")
+        
         var destinationIndexPath: IndexPath
         if let indexPath = coordinator.destinationIndexPath {
             destinationIndexPath = indexPath

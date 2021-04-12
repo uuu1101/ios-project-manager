@@ -11,6 +11,7 @@ class ItemListCell: UICollectionViewCell {
     private var bodyLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
+        label.numberOfLines = 3
         label.font = .preferredFont(forTextStyle: .body)
         label.textColor = .systemGray
         return label
@@ -86,7 +87,7 @@ class ItemListCell: UICollectionViewCell {
         // Specify you want _full width_
         // layout.estimatedItemSize 에서 넣어준 width 가 layoutAttributes.frame.width 로 들어옴
         let targetSize = CGSize(width: layoutAttributes.frame.width, height: 0)
-        
+
         // Calculate the size (height) using Auto Layout
         let autoLayoutSize = contentView.systemLayoutSizeFitting(targetSize, withHorizontalFittingPriority: UILayoutPriority.required, verticalFittingPriority: UILayoutPriority.defaultLow)
         let autoLayoutFrame = CGRect(origin: autoLayoutAttributes.frame.origin, size: autoLayoutSize)
